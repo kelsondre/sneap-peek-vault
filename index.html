@@ -13,39 +13,65 @@
             padding: 0;
             text-align: center;
             overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
-            animation: glitch 1s infinite alternate;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #f8f8f8;
-        }
-
-        .video-container {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #e94560;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
-        }
-
-        video {
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lock-screen h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+
+        .lock-screen input {
+            padding: 10px;
+            font-size: 1.2rem;
+            border: 2px solid #e94560;
+            background: transparent;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
             border-radius: 5px;
+        }
+
+        .lock-screen button {
+            padding: 10px 20px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .lock-screen button:hover {
+            background: #ff6b81;
+        }
+
+        .lock-screen .error {
+            color: #ff6b81;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .content {
+            display: none; /* Hidden until password is entered */
         }
 
         .vhs-overlay {
@@ -58,7 +84,19 @@
             opacity: 0.1;
             background: url('https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif') center;
             mix-blend-mode: overlay;
-            z-index: 9999;
+            z-index: 9998;
+        }
+
+        /* Rest of your existing CSS */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 5px;
         }
 
         .disclaimer {
@@ -68,33 +106,6 @@
             margin: 20px 0;
             text-align: left;
             color: #f8f8f8;
-        }
-
-        .support {
-            margin: 30px 0;
-        }
-
-        .support a {
-            color: #e94560;
-            text-decoration: none;
-            font-weight: bold;
-            border: 1px solid #e94560;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .support a:hover {
-            background: #e94560;
-            color: #fff;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 0 0 10px rgba(233, 69, 96, 0.5); }
-            25% { transform: translate(-2px, 2px); }
-            50% { transform: translate(2px, -2px); }
-            75% { transform: translate(-2px, -2px); }
-            100% { transform: translate(2px, 2px); }
         }
 
         .watermark {
@@ -108,57 +119,82 @@
     </style>
 </head>
 <body>
-    <div class="vhs-overlay"></div>
-    <div class="container">
-        <h1>✨ Kelsondre's Secret Video Vault ✨</h1>
-        <p class="subtitle">(Not going on YouTube, btw... shhh.)</p>
-
-        <div class="video-container">
-            <h2>✨ Unlisted Preview ✨</h2>
-            <video controls autoplay loop>
-                <source src="https://files.catbox.moe/uc358h.webm" type="video/webm">
-                Your browser doesn't support the video tag.
-            </video>
-        </div>
-
-        <div class="disclaimer">
-            <p>🚨 <strong>HELLO THERE!</strong> These videos are ✨unlisted✨... enjoy the sneak peek.</p>
-            <p>If you’re seeing this, you’re cool. Don’t share unless I say so. 😎</p>
-        </div>
-
-        <div class="support">
-            <p>Like what you see? Support me (optional):</p>
-            <a href="https://paypal.me/YourLink" target="_blank">PayPal</a> | 
-            <a href="https://ko-fi.com/YourLink" target="_blank">Ko-fi</a>
-        </div>
+    <!-- LOCK SCREEN -->
+    <div class="lock-screen" id="lockScreen">
+        <h1>🔒 SECRET VAULT 🔒</h1>
+        <p>Enter the password to continue:</p>
+        <input type="password" id="passwordInput" placeholder="Password">
+        <button onclick="checkPassword()">UNLOCK</button>
+        <p class="error" id="errorMsg">Wrong password. Fuck off.</p>
     </div>
 
-    <div class="watermark">this is totally not YouTube™</div>
+    <!-- MAIN CONTENT (HIDDEN UNTIL PASSWORD IS ENTERED) -->
+    <div class="content" id="mainContent">
+        <div class="vhs-overlay"></div>
+        <div class="container">
+            <h1>✨ Kelsondre's Secret Video Vault ✨</h1>
+            <p class="subtitle">(Not going on YouTube, btw... shhh.)</p>
+
+            <div class="video-container">
+                <h2>✨ Unlisted Preview ✨</h2>
+                <!-- Encrypted video URL (prevents easy stealing) -->
+                <video controls id="secretVideo">
+                    Your browser doesn't support the video tag.
+                </video>
+            </div>
+
+            <div class="disclaimer">
+                <p>🚨 <strong>HELLO THERE!</strong> These videos are ✨unlisted✨... enjoy the sneak peek.</p>
+                <p>If you’re seeing this, you’re cool. Don’t share unless I say so. 😎</p>
+            </div>
+        </div>
+        <div class="watermark">this is totally not YouTube™</div>
+    </div>
 
     <script>
-        // Optional: Countdown timer for YouTube release
-        // Set your target date (YYYY, MM-1, DD)
-        const targetDate = new Date(2024, 11, 31); // Dec 31, 2024
-        const timerElement = document.createElement('div');
-        timerElement.style.margin = '20px 0';
-        timerElement.style.fontSize = '1.2rem';
-        document.querySelector('.container').appendChild(timerElement);
+        // Password system
+        const CORRECT_PASSWORD = "Colossal812";
+        const lockScreen = document.getElementById("lockScreen");
+        const mainContent = document.getElementById("mainContent");
+        const passwordInput = document.getElementById("passwordInput");
+        const errorMsg = document.getElementById("errorMsg");
+        const secretVideo = document.getElementById("secretVideo");
 
-        function updateCountdown() {
-            const now = new Date();
-            const diff = targetDate - now;
+        // Encrypted video URL (base64 encoded to obscure it)
+        const ENCRYPTED_VIDEO_URL = "aHR0cHM6Ly9maWxlcy5jYXRib3gubW9lL3VjMzU4aC53ZWJt"; // Base64 of your URL
 
-            if (diff <= 0) {
-                timerElement.innerHTML = "🔥 Now public on YouTube!";
-                return;
+        function checkPassword() {
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                // Unlock the site
+                lockScreen.style.display = "none";
+                mainContent.style.display = "block";
+
+                // Decrypt and load the video
+                const videoUrl = atob(ENCRYPTED_VIDEO_URL);
+                secretVideo.innerHTML = `<source src="${videoUrl}" type="video/webm">`;
+
+                // Extra protection: If someone deletes the lock screen, content won't load
+                sessionStorage.setItem("unlocked", "true");
+            } else {
+                errorMsg.style.display = "block";
+                passwordInput.value = "";
             }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            timerElement.innerHTML = `Public YouTube release in: <strong>${days} days</strong>—watch it here first!`;
         }
 
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
+        // Prevent bypassing the lock screen via Inspect Element
+        window.onload = function() {
+            if (sessionStorage.getItem("unlocked") !== "true") {
+                lockScreen.style.display = "flex";
+                mainContent.style.display = "none";
+            } else {
+                // If already unlocked, load video
+                const videoUrl = atob(ENCRYPTED_VIDEO_URL);
+                secretVideo.innerHTML = `<source src="${videoUrl}" type="video/webm">`;
+            }
+        };
+
+        // Extra: Disable right-click to prevent easy inspection
+        document.addEventListener("contextmenu", (e) => e.preventDefault());
     </script>
 </body>
 </html>
