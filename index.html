@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Kelsondre's Secret Video Vault ✨</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e94560;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+            animation: glitch 1s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #f8f8f8;
+        }
+
+        .video-container {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #e94560;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+        }
+
+        video {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .vhs-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+            background: url('https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif') center;
+            mix-blend-mode: overlay;
+            z-index: 9999;
+        }
+
+        .disclaimer {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid #e94560;
+            padding: 10px;
+            margin: 20px 0;
+            text-align: left;
+            color: #f8f8f8;
+        }
+
+        .support {
+            margin: 30px 0;
+        }
+
+        .support a {
+            color: #e94560;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #e94560;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .support a:hover {
+            background: #e94560;
+            color: #fff;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 10px rgba(233, 69, 96, 0.5); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(2px, 2px); }
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.5;
+            font-size: 0.8rem;
+            color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+    <div class="vhs-overlay"></div>
+    <div class="container">
+        <h1>✨ Kelsondre's Secret Video Vault ✨</h1>
+        <p class="subtitle">(Not going on YouTube, btw... shhh.)</p>
+
+        <div class="video-container">
+            <h2>✨ Unlisted Preview ✨</h2>
+            <video controls autoplay loop>
+                <source src="https://files.catbox.moe/uc358h.webm" type="video/webm">
+                Your browser doesn't support the video tag.
+            </video>
+        </div>
+
+        <div class="disclaimer">
+            <p>🚨 <strong>HELLO THERE!</strong> These videos are ✨unlisted✨... enjoy the sneak peek.</p>
+            <p>If you’re seeing this, you’re cool. Don’t share unless I say so. 😎</p>
+        </div>
+
+        <div class="support">
+            <p>Like what you see? Support me (optional):</p>
+            <a href="https://paypal.me/YourLink" target="_blank">PayPal</a> | 
+            <a href="https://ko-fi.com/YourLink" target="_blank">Ko-fi</a>
+        </div>
+    </div>
+
+    <div class="watermark">this is totally not YouTube™</div>
+
+    <script>
+        // Optional: Countdown timer for YouTube release
+        // Set your target date (YYYY, MM-1, DD)
+        const targetDate = new Date(2024, 11, 31); // Dec 31, 2024
+        const timerElement = document.createElement('div');
+        timerElement.style.margin = '20px 0';
+        timerElement.style.fontSize = '1.2rem';
+        document.querySelector('.container').appendChild(timerElement);
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                timerElement.innerHTML = "🔥 Now public on YouTube!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            timerElement.innerHTML = `Public YouTube release in: <strong>${days} days</strong>—watch it here first!`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
